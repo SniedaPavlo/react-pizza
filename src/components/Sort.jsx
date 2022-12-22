@@ -1,7 +1,17 @@
 import React from "react";
 
-
 function Sort() {
+
+    const [turn, turnChenge] = React.useState(false)
+
+    const [countList, countChange] = React.useState(0)
+    const list = ['популярности', 'цене', 'алфавиту']
+
+    function addAndHidden(i) {
+        countChange(i)
+        turnChenge(false)
+    }
+
     return (
         <div className="sort">
             <div className="sort__label">
@@ -18,17 +28,19 @@ function Sort() {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span>популярности</span>
+                <span onClick={() => turnChenge(!turn)}> {list[countList]} </span>
             </div>
-            <div className="sort__popup">
+            {turn && (<div className="sort__popup">
                 <ul>
-                    <li className="active">популярности</li>
-                    <li>цене</li>
-                    <li>алфавиту</li>
+                    {list.map((el, idx) => {
+                        return <li onClick={() => { addAndHidden(idx) }}
+                            className={idx === countList ? 'active' : ''} key={el}>{el}</li>
+                    })}
                 </ul>
-            </div>
+            </div>)}
         </div>
     )
 }
+
 
 export default Sort

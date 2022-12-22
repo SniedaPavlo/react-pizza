@@ -7,7 +7,7 @@ import './scss/app.scss';
 import pizzas from './assets/pizzas.json'
 
 function App() {
-  console.log(pizzas)
+
   return (
     <div className="wrapper">
       <Header />
