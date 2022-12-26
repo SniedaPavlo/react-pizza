@@ -18,17 +18,21 @@ function Home() {
             })
     }, [])
 
+    window.scrollTo(0, 0)
+
     return (
-        <div>
-            <div className="content__top">
-                <Sort />
-                <Categories />
-            </div>
-            <h2 className="content__title">Все пиццы</h2>
-            <div className="content__items">
-                {pizzasLoading
-                    ? [...new Array(6)].map((el, index) => < Skeleton key={index} />)
-                    : statePizzas.map((obj) => <  PizzaBlog {...obj} key={obj.id.toString()} />)}
+        <div className="container">
+            <div>
+                <div className="content__top">
+                    <Sort />
+                    <Categories />
+                </div>
+                <h2 className="content__title">Все пиццы</h2>
+                <div className="content__items">
+                    {pizzasLoading
+                        ? [...new Array(6)].map((el, index) => < Skeleton key={index} />)
+                        : statePizzas.map((obj) => <  PizzaBlog {...obj} key={obj.id.toString()} />)}
+                </div>
             </div>
         </div>
     )
