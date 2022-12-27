@@ -1,16 +1,17 @@
 import React from "react";
 
-function Sort() {
+function Sort({ value, onChangeValue }) {
 
     const [turn, turnChenge] = React.useState(false)
 
-    const [countList, countChange] = React.useState(0)
-    const list = ['популярности', 'цене', 'алфавиту']
-
-    function addAndHidden(i) {
-        countChange(i)
-        turnChenge(false)
-    }
+    const list = [
+        { name: 'популярности (ASK)', sortProperty: 'rating' },
+        { name: 'популярности (DESC)', sortProperty: '-rating' },
+        { name: 'цене (DESC)', sortProperty: 'price' },
+        { name: 'цене (ASK)', sortProperty: '-price' },
+        { name: 'алфавиту (DESC)', sortProperty: 'tittle' },
+        { name: 'алфавиту (ASK)', sortProperty: '-tittle' }
+    ]
 
     return (
         <div className="sort">
@@ -28,13 +29,16 @@ function Sort() {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => turnChenge(!turn)}> {list[countList]} </span>
+                <span onClick={() => turnChenge(!turn)}> {value.name} </span>
             </div>
             {turn && (<div className="sort__popup">
                 <ul>
-                    {list.map((el, idx) => {
-                        return <li onClick={() => { addAndHidden(idx) }}
-                            className={idx === countList ? 'active' : ''} key={el}>{el}</li>
+                    {list.map((obj, idx) => {
+                        return <li onClick={() => {
+                            onChangeValue(obj)
+                            turnChenge(false)
+                        }}
+                            className={obj.sortProperty === value.sortProperty ? 'active' : ''} key={obj.name}>{obj.name}</li>
                     })}
                 </ul>
             </div>)}
