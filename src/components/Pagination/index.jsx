@@ -11,7 +11,7 @@ function Pagination({ onChangeCurrent }) {
             breakLabel="..."
             nextLabel=">"
             onPageChange={event => {
-                console.log(event)
+                // console.log(event)
                 onChangeCurrent(event.selected + 1)
             }}
             pageRangeDisplayed={4}

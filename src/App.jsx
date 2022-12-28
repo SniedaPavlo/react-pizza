@@ -6,20 +6,25 @@ import Header from './components/Header';
 import './scss/app.scss';
 import { Routes, Route } from 'react-router-dom'
 
+export const SearchContext = React.createContext(null)
+
 function App() {
+
   const [searchValue, setSearchValue] = React.useState('')
-  console.log(searchValue)
+
   return (
-    <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-      <div className="content">
-        <Routes>
-          <Route path='/' element={<Home searchValue={searchValue} />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
+    <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+      <div className="wrapper">
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </SearchContext.Provider>
   );
 }
 

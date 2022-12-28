@@ -4,19 +4,22 @@ import PizzaBlog from '../components/PizzaBlog/';
 import Categories from '../components/Сategories';
 import Sort from '../components/Sort';
 import Pagination from '../components/Pagination'
-
-function Home({ searchValue }) {
-
+import { SearchContext } from '../App'
+function Home() {
+    //контекст
+    const { searchValue } = React.useContext(SearchContext)
+    //хуки
     const [statePizzas, setPizzas] = React.useState([])
     const [pizzasLoading, setLoading] = React.useState(true)
     const [sort, setSort] = React.useState({ name: 'популярности', sortProperty: 'rating' })
     const [currentPage, setCurrentPage] = React.useState(0)
     const [СategoryId, setСategoriesId] = React.useState(0)
 
+    //Массивы state
     // const PizzasFilter = statePizzas.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ? true : false)
     const Pizzas = statePizzas.map((obj) => <  PizzaBlog {...obj} key={obj.id.toString()} />)
     const SkeletonArr = [...new Array(6)].map((el, index) => < Skeleton key={index} />)
-
+    //запросы
     const order = sort.sortProperty.split('')[0] === '-' ? 'desc' : 'asc';
     const sortPut = sort.sortProperty.replace('-', '');
     const category = СategoryId > 0 ? `&category=${СategoryId}` : '';

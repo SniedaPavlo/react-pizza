@@ -1,7 +1,10 @@
 import React from "react";
 import s from './Search.module.scss';
+import { SearchContext } from '../../App'
 
-function Search({ searchValue, setSearchValue }) {
+function Search() {
+
+    const { searchValue, setSearchValue } = React.useContext(SearchContext)
 
     function clearValueInput() {
         setSearchValue('')
