@@ -6,7 +6,6 @@ function NotFoundPage() {
         <div>
             <NotFoundBlock />
         </div>
-
     )
 }
 
