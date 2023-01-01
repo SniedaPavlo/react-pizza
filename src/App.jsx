@@ -12,43 +12,25 @@ export const SearchContext = React.createContext(null)
 
 function App() {
 
-  const count = useSelector((state) => state.counter.count)
-  const dispatch = useDispatch()
+  // const count = useSelector((state) => state.counter.count)
+  // const dispatch = useDispatch()
 
   const [searchValue, setSearchValue] = React.useState('')
 
+
   return (
-
-    <div>
-      <div>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </button>
-        <span>{count}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button>
+    <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+      <div className="wrapper">
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+        </div>
       </div>
-    </div>
-
-    // <SearchContext.Provider value={{ searchValue, setSearchValue }}>
-    //   <div className="wrapper">
-    //     <Header />
-    //     <div className="content">
-    //       <Routes>
-    //         <Route path='/' element={<Home />} />
-    //         <Route path='/cart' element={<Cart />} />
-    //         <Route path='*' element={<NotFoundPage />} />
-    //       </Routes>
-    //     </div>
-    //   </div>
-    // </SearchContext.Provider>
+    </SearchContext.Provider>
   );
 }
 
