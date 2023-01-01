@@ -4,20 +4,20 @@ import PizzaBlog from '../components/PizzaBlog/';
 import Categories from '../components/Сategories';
 import Sort from '../components/Sort';
 import Pagination from '../components/Pagination'
+import axios from 'axios'
 import { SearchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId } from './../Redux/Slices/filterSlice'
+import { setCategoryId, setCurrentPage } from './../Redux/Slices/filterSlice'
 
 function Home() {
 
     //контекст
     const { searchValue } = React.useContext(SearchContext)
     //хуки
-    const { sort, CategoryId } = useSelector((state) => state.filterSlice)
+    const { sort, CategoryId, currentPage } = useSelector((state) => state.filterSlice)
     const dispatch = useDispatch()
     const [statePizzas, setPizzas] = React.useState([])
     const [pizzasLoading, setLoading] = React.useState(true)
-    const [currentPage, setCurrentPage] = React.useState(0)
 
     //Массивы state
     // const PizzasFilter = statePizzas.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ? true : false)
@@ -32,21 +32,22 @@ function Home() {
 
     React.useEffect(() => {
         setLoading(true)
-        fetch(`
-        https://63a4cc372a73744b00802459.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortPut}&order=${order}&${search}`
-        )
-            .then((res) => res.json())
-            .then((json) => {
-                setPizzas(json)
+        axios.get(`https://63a4cc372a73744b00802459.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortPut}&order=${order}&${search}`)
+            .then((res) => {
+                setPizzas(res.data)
                 setLoading(false)
+                window.scrollTo(0, 0)
             })
-        window.scrollTo(0, 0)
-    }, [CategoryId, sort, searchValue, currentPage])
 
+    }, [CategoryId, sort, searchValue, currentPage])
 
     function setСategories(i) {
         dispatch(setCategoryId(i))
     } // или сразу можно передать в пропсы этот кол бек 
+
+    function onChangeCurrent(namber) {
+        dispatch(setCurrentPage(namber))
+    }
 
     return (
         <div className="container">
@@ -62,7 +63,7 @@ function Home() {
                         : Pizzas}
                 </div>
             </div>
-            <Pagination onChangeCurrent={(number) => setCurrentPage(number)} />
+            <Pagination currentPage={currentPage} onChangeCurrent={onChangeCurrent} />
         </div>
     )
 }

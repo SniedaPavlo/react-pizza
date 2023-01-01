@@ -2,6 +2,7 @@ import React from "react";
 import { setSort } from './../Redux/Slices/filterSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
+
 function Sort() {
     const dispatch = useDispatch()
     const sort = useSelector(state => state.filterSlice.sort)
