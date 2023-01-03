@@ -4,16 +4,24 @@ import PizzaBlog from '../components/PizzaBlog/';
 import Categories from '../components/Сategories';
 import Sort from '../components/Sort';
 import Pagination from '../components/Pagination'
+import { list } from './../components/Sort'
 import axios from 'axios'
+import qs from 'qs'
+import { useNavigate } from "react-router-dom";
 import { SearchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId, setCurrentPage } from './../Redux/Slices/filterSlice'
+import { setCategoryId, setCurrentPage, setParams } from './../Redux/Slices/filterSlice'
 
 function Home() {
+    const isSearch = React.useRef(false)
+    const isMounter = React.useRef(false)
+    console.log(isSearch)
+    console.log(isMounter)
 
     //контекст
     const { searchValue } = React.useContext(SearchContext)
     //хуки
+    const navigate = useNavigate()
     const { sort, CategoryId, currentPage } = useSelector((state) => state.filterSlice)
     const dispatch = useDispatch()
     const [statePizzas, setPizzas] = React.useState([])
@@ -29,8 +37,7 @@ function Home() {
     const category = CategoryId > 0 ? `&category=${CategoryId}` : '';
     const search = searchValue ? `search=${searchValue}` : ''
 
-
-    React.useEffect(() => {
+    function PizzasFetch() {
         setLoading(true)
         axios.get(`https://63a4cc372a73744b00802459.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortPut}&order=${order}&${search}`)
             .then((res) => {
@@ -38,8 +45,49 @@ function Home() {
                 setLoading(false)
                 window.scrollTo(0, 0)
             })
+    }
 
-    }, [CategoryId, sort, searchValue, currentPage])
+    React.useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1))
+            console.log(params)
+            dispatch(setParams({
+                ...params,
+                sort: list.find((el) => el.sortProperty === params.sortProperty)
+            }))
+        }
+        isSearch.current = true // говорим, что диспатч выполнил свою работу
+    }, [])
+
+    //если не было запроса по втановленому URL ( так как выше функция не исполнилась и не изменила на true)
+    React.useEffect(() => {
+        window.scrollBy(0, 0)
+        //выполняется толкьо после смены isSearch.current = true 
+        if (!isSearch.current) {
+            PizzasFetch()
+        }
+
+        isSearch.current = false
+
+        // я сделал по своему так: у меня по другому не работает> оставлю на всякий 
+        // 
+        if (window.location.search === '') {
+            PizzasFetch()
+        }
+
+    }, [CategoryId, sort, currentPage, searchValue])
+
+    React.useEffect(() => {
+        if (isMounter.current) {
+            const queryString = qs.stringify({
+                sortProperty: sort.sortProperty,
+                CategoryId,
+                currentPage
+            })
+            navigate(`?${queryString}`)
+        }
+        isMounter.current = true
+    }, [CategoryId, sort, currentPage])
 
     function setСategories(i) {
         dispatch(setCategoryId(i))
