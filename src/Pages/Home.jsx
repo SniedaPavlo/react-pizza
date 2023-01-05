@@ -15,8 +15,6 @@ import { setCategoryId, setCurrentPage, setParams } from './../Redux/Slices/filt
 function Home() {
     const isSearch = React.useRef(false)
     const isMounter = React.useRef(false)
-    console.log(isSearch)
-    console.log(isMounter)
 
     //контекст
     const { searchValue } = React.useContext(SearchContext)
@@ -36,7 +34,7 @@ function Home() {
     const sortPut = sort.sortProperty.replace('-', '');
     const category = CategoryId > 0 ? `&category=${CategoryId}` : '';
     const search = searchValue ? `search=${searchValue}` : ''
-
+    // запрос на сервер
     function PizzasFetch() {
         setLoading(true)
         axios.get(`https://63a4cc372a73744b00802459.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortPut}&order=${order}&${search}`)
@@ -46,11 +44,10 @@ function Home() {
                 window.scrollTo(0, 0)
             })
     }
-
+    // если есть URL парсим обьект, передаем в стейт, даем запрос на сервер 
     React.useEffect(() => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1))
-            console.log(params)
             dispatch(setParams({
                 ...params,
                 sort: list.find((el) => el.sortProperty === params.sortProperty)
@@ -62,7 +59,8 @@ function Home() {
     //если не было запроса по втановленому URL ( так как выше функция не исполнилась и не изменила на true)
     React.useEffect(() => {
         window.scrollBy(0, 0)
-        //выполняется толкьо после смены isSearch.current = true 
+        // выполняется толкьо после смены isSearch.current = true 
+        //  если нет URL вставленого, то отправляем запрос по дефолту с инишелСтейт
         if (!isSearch.current) {
             PizzasFetch()
         }
@@ -70,13 +68,13 @@ function Home() {
         isSearch.current = false
 
         // я сделал по своему так: у меня по другому не работает> оставлю на всякий 
-        // 
+        // если нет URL вставленого, то отправляем запрос по дефолту с инишелСтейт
         if (window.location.search === '') {
             PizzasFetch()
         }
 
     }, [CategoryId, sort, currentPage, searchValue])
-
+    // если второй и более рендеринг - вставляем URL прийдящий с state
     React.useEffect(() => {
         if (isMounter.current) {
             const queryString = qs.stringify({
@@ -93,8 +91,8 @@ function Home() {
         dispatch(setCategoryId(i))
     } // или сразу можно передать в пропсы этот кол бек 
 
-    function onChangeCurrent(namber) {
-        dispatch(setCurrentPage(namber))
+    function onChangeCurrent(number) {
+        dispatch(setCurrentPage(number))
     }
 
     return (

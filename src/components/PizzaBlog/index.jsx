@@ -1,10 +1,30 @@
 import React from "react";
 import { useState } from "react";
-function PizzaBlog({ price, title, imageUrl, sizes, types }) {
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from './../../Redux/Slices/cartSlice'
+function PizzaBlog({ price, title, imageUrl, sizes, types, id }) {
 
+    const items = useSelector((state) => state.cartSlice.items)
+    const dispatch = useDispatch()
     const [sizeCount, sizeSet] = useState(0)
     const [typesCount, typesSet] = useState(0)
     const typeNames = ['тонкое', 'традиционное']
+
+    let PizzaBlock = {
+        price,
+        title,
+        imageUrl,
+        sizeCount,
+        types,
+        id,
+        typesCount
+    }
+
+    function onClickAddPizza() {
+        dispatch(addItem(PizzaBlock))
+    }
+
+    const myObjofItems = items.find((obj) => PizzaBlock.id === obj.id)
 
     return (
         <div className="pizza-block-wrapper">
@@ -42,8 +62,8 @@ function PizzaBlog({ price, title, imageUrl, sizes, types }) {
                                 fill="white"
                             />
                         </svg>
-                        <span>Добавить</span>
-                        <i>{`0`}</i>
+                        <span onClick={onClickAddPizza}>Добавить</span>
+                        <i> {myObjofItems ? myObjofItems.count : 0}</i>
                     </button>
                 </div>
             </div>

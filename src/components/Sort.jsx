@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { setSort } from './../Redux/Slices/filterSlice'
 import { useSelector, useDispatch } from 'react-redux'
+
 
 const list = [
     { name: 'популярности (ASK)', sortProperty: 'rating' },
@@ -16,15 +17,29 @@ function Sort() {
     const dispatch = useDispatch()
     const sort = useSelector(state => state.filterSlice.sort)
     const [turn, turnChenge] = React.useState(false)
+    const sortRef = React.useRef()
 
-    // function onClikItem(obj) {
-    //     dispatch(setSort(obj))
-    //     turnChenge(false)
-    // }
+    React.useEffect(() => {
+        function toggleSort(event) {
+            if (!event.path.includes(sortRef.current))
+                turnChenge(false)
+        }
+        const body = document.querySelector('body')
+        body.addEventListener('click', toggleSort)
+
+        return function () {
+            body.removeEventListener('click', toggleSort)
+        }
+
+
+
+
+
+    }, [])
 
     return (
         <div className="sort">
-            <div className="sort__label">
+            <div ref={sortRef} className="sort__label">
                 <svg
                     width="10"
                     height="6"
