@@ -28,6 +28,9 @@ const filterSlice = createSlice({
             state.sort = action.payload.sort
         }
     }
+
+
+
 })
 
 export const { setCategoryId, setSort, setCurrentPage, setParams } = filterSlice.actions

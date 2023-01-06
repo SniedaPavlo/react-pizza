@@ -5,29 +5,27 @@ import Categories from '../components/Сategories';
 import Sort from '../components/Sort';
 import Pagination from '../components/Pagination'
 import { list } from './../components/Sort'
-import axios from 'axios'
+import NoContent from './../components/NoContent'
 import qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategoryId, setCurrentPage, setParams } from './../Redux/Slices/filterSlice'
+import { fetchPizzas } from '../Redux/Slices/pizzaSlice'
 
 function Home() {
     const isSearch = React.useRef(false)
     const isMounter = React.useRef(false)
-
     //контекст
     const { searchValue } = React.useContext(SearchContext)
     //хуки
     const navigate = useNavigate()
     const { sort, CategoryId, currentPage } = useSelector((state) => state.filterSlice)
     const dispatch = useDispatch()
-    const [statePizzas, setPizzas] = React.useState([])
-    const [pizzasLoading, setLoading] = React.useState(true)
-
-    //Массивы state
+    //Данные
     // const PizzasFilter = statePizzas.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ? true : false)
-    const Pizzas = statePizzas.map((obj) => <  PizzaBlog {...obj} key={obj.id.toString()} />)
+    const { pizzas, status } = useSelector((state) => state.pizza)
+    const Pizzas = pizzas.map((obj) => <PizzaBlog {...obj} key={obj.id.toString()} />)
     const SkeletonArr = [...new Array(6)].map((el, index) => < Skeleton key={index} />)
     //запросы
     const order = sort.sortProperty.split('')[0] === '-' ? 'desc' : 'asc';
@@ -35,14 +33,15 @@ function Home() {
     const category = CategoryId > 0 ? `&category=${CategoryId}` : '';
     const search = searchValue ? `search=${searchValue}` : ''
     // запрос на сервер
-    function PizzasFetch() {
-        setLoading(true)
-        axios.get(`https://63a4cc372a73744b00802459.mockapi.io/items?page=${currentPage}&limit=4${category}&sortBy=${sortPut}&order=${order}&${search}`)
-            .then((res) => {
-                setPizzas(res.data)
-                setLoading(false)
-                window.scrollTo(0, 0)
-            })
+    async function PizzasFetch() {
+        dispatch(fetchPizzas({
+            order,
+            sortPut,
+            category,
+            search,
+            currentPage
+        }))
+        window.scrollTo(0, 0)
     }
     // если есть URL парсим обьект, передаем в стейт, даем запрос на сервер 
     React.useEffect(() => {
@@ -104,9 +103,10 @@ function Home() {
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
-                    {pizzasLoading
-                        ? SkeletonArr
-                        : Pizzas}
+                    {status === 'error' ?
+                        <NoContent /> : status === 'pending' ? SkeletonArr : Pizzas}
+
+
                 </div>
             </div>
             <Pagination currentPage={currentPage} onChangeCurrent={onChangeCurrent} />

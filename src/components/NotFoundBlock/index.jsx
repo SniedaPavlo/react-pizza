@@ -11,7 +11,6 @@ function NotFoundBlock() {
             <br />
             <button>назад</button>
         </div>
-
     )
 }
 
