@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
 const initialState = {
     totalPrice: 0,
     totalItems: 0,
@@ -71,6 +72,9 @@ const cartSlice = createSlice({
         }
     }
 })
+
+export const selectCart = (state) => state.cartSlice
+export const myObjofItems = (id, state) => state.cartSlice.items.find((obj) => obj.id === id)
 
 export const { addItem, minusItem, deleteItem, clearCart } = cartSlice.actions
 export default cartSlice.reducer

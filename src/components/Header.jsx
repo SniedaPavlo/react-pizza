@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from 'react-router-dom'
 import Search from '../components/Search'
 import { useSelector } from "react-redux";
+import { selectCart } from './../Redux/Slices/cartSlice'
 
 function Header() {
 
 
-    const totalPrice = useSelector((state) => state.cartSlice.totalPrice)
-    const totalItems = useSelector((state) => state.cartSlice.totalItems)
-
+    const totalPrice = useSelector(selectCart).totalPrice
+    const totalItems = useSelector(selectCart).totalItems
 
     return (
         <div className="header">

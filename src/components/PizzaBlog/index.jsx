@@ -1,10 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from './../../Redux/Slices/cartSlice'
+import { addItem, selectCart } from './../../Redux/Slices/cartSlice'
 function PizzaBlog({ price, title, imageUrl, sizes, types, id }) {
 
-    const items = useSelector((state) => state.cartSlice.items)
+    const items = useSelector(selectCart).items
     const dispatch = useDispatch()
     const [sizeCount, sizeSet] = useState(0)
     const [typesCount, typesSet] = useState(0)

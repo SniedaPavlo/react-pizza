@@ -10,21 +10,19 @@ import qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId, setCurrentPage, setParams } from './../Redux/Slices/filterSlice'
-import { fetchPizzas } from '../Redux/Slices/pizzaSlice'
+import { setCategoryId, setCurrentPage, setParams, selectFilter, setSearchValue } from './../Redux/Slices/filterSlice'
+import { fetchPizzas, selectPizza } from '../Redux/Slices/pizzaSlice'
 
 function Home() {
     const isSearch = React.useRef(false)
     const isMounter = React.useRef(false)
-    //контекст
-    const { searchValue } = React.useContext(SearchContext)
     //хуки
     const navigate = useNavigate()
-    const { sort, CategoryId, currentPage } = useSelector((state) => state.filterSlice)
     const dispatch = useDispatch()
+    const { sort, CategoryId, currentPage, searchValue } = useSelector(selectFilter)
     //Данные
     // const PizzasFilter = statePizzas.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ? true : false)
-    const { pizzas, status } = useSelector((state) => state.pizza)
+    const { pizzas, status, message } = useSelector(selectPizza)
     const Pizzas = pizzas.map((obj) => <PizzaBlog {...obj} key={obj.id.toString()} />)
     const SkeletonArr = [...new Array(6)].map((el, index) => < Skeleton key={index} />)
     //запросы
@@ -63,9 +61,7 @@ function Home() {
         if (!isSearch.current) {
             PizzasFetch()
         }
-
         isSearch.current = false
-
         // я сделал по своему так: у меня по другому не работает> оставлю на всякий 
         // если нет URL вставленого, то отправляем запрос по дефолту с инишелСтейт
         if (window.location.search === '') {
@@ -103,10 +99,9 @@ function Home() {
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
-                    {status === 'error' ?
-                        <NoContent /> : status === 'pending' ? SkeletonArr : Pizzas}
-
-
+                    {message === 'Пиц не найдено' ? <div> пиц нету уходи / message: {message} </div> :
+                        status === 'error' ?
+                            <NoContent /> : status === 'pending' ? SkeletonArr : Pizzas}
                 </div>
             </div>
             <Pagination currentPage={currentPage} onChangeCurrent={onChangeCurrent} />
