@@ -7,10 +7,9 @@ import Pagination from '../components/Pagination'
 import { list } from './../components/Sort'
 import NoContent from './../components/NoContent'
 import qs from 'qs'
-import { useNavigate } from "react-router-dom";
-import { SearchContext } from '../App'
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId, setCurrentPage, setParams, selectFilter, setSearchValue } from './../Redux/Slices/filterSlice'
+import { setCategoryId, setCurrentPage, setParams, selectFilter, } from './../Redux/Slices/filterSlice'
 import { fetchPizzas, selectPizza } from '../Redux/Slices/pizzaSlice'
 
 function Home() {
@@ -23,7 +22,9 @@ function Home() {
     //Данные
     // const PizzasFilter = statePizzas.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ? true : false)
     const { pizzas, status, message } = useSelector(selectPizza)
-    const Pizzas = pizzas.map((obj) => <PizzaBlog {...obj} key={obj.id.toString()} />)
+    const Pizzas = pizzas.map((obj) => {
+        return <PizzaBlog key={obj.id.toString()} {...obj} />
+    })
     const SkeletonArr = [...new Array(6)].map((el, index) => < Skeleton key={index} />)
     //запросы
     const order = sort.sortProperty.split('')[0] === '-' ? 'desc' : 'asc';
