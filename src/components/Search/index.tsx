@@ -11,8 +11,8 @@ function Search() {
 
     const [value, setValue] = React.useState<string | undefined>('')
     const inputRef = React.useRef<HTMLInputElement | null>(null)
-
-    function clearValueInput() {
+    // вместо MouseEventHandler ставим MouseEvent
+    function clearValueInput(event: React.MouseEvent<SVGSVGElement>) {
         dispatch(setSearchValue(''))
         setValue('')
         inputRef.current?.focus()
@@ -23,8 +23,8 @@ function Search() {
             dispatch(setSearchValue(str))
         }, 300), []
     )
-
-    function onChangeInput(event: any) {
+    // вместо React.ChangeEventHandler ставим React.ChangeEvent
+    function onChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
 
         setValue(event.target.value)
         updateSearchValue(event.target.value)

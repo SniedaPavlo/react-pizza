@@ -84,8 +84,8 @@ const Home: React.FC = () => {
         isMounter.current = true
     }, [CategoryId, sort, currentPage])
 
-    function setСategories(i: number) {
-        dispatch(setCategoryId(i))
+    function setСategories(index: number) {
+        dispatch(setCategoryId(index))
     } // или сразу можно передать в пропсы этот кол бек 
 
     function onChangeCurrent(n: number) {

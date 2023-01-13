@@ -28,8 +28,11 @@ const Sort: React.FC = () => {
     const sortRef = React.useRef<HTMLDivElement | null>(null)
 
     React.useEffect(() => {
-        function toggleSort(event: any) {
-            if (!event.path.includes(sortRef.current))
+        function toggleSort(event: Event) {
+            const _event = event as Event & {
+                path: Node[]
+            }
+            if (sortRef.current && !_event.path.includes(sortRef.current))
                 turnChenge(false)
         }
         const body: HTMLBodyElement | null = document.querySelector('body')
@@ -38,10 +41,6 @@ const Sort: React.FC = () => {
         return function () {
             body?.removeEventListener('click', toggleSort)
         }
-
-
-
-
 
     }, [])
 

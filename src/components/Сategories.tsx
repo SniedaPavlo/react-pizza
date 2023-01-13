@@ -2,7 +2,7 @@ import React from "react";
 
 type CategoriesProps = {
     value: number,
-    onClickCategories: any
+    onClickCategories: (ind: number) => void
 }
 
 

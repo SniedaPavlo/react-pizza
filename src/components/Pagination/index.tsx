@@ -4,13 +4,12 @@ import s from './Pagination.module.scss'
 
 type PaginationProps = {
     currentPage: number,
-    onChangeCurrent: any
+    onChangeCurrent: (n: number) => void
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, onChangeCurrent }) => {
 
     return (
-
         <ReactPaginate
             className={s.root}
             breakLabel="..."
@@ -23,7 +22,6 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, onChangeCurrent })
             pageCount={3}
             forcePage={currentPage}
             previousLabel="<"
-
         />
     )
 }
