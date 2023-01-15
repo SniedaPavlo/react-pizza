@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, selectCart } from '../../Redux/Slices/cartSlice'
+import { addItem, PizzaCartType, selectCart } from '../../Redux/Slices/cartSlice'
 
 type PizzaBlogProps = {
     price: number,
@@ -11,25 +11,27 @@ type PizzaBlogProps = {
     sizes: number[],
     types: number[],
     id: number
-
 }
 
 const PizzaBlog: React.FC<PizzaBlogProps> = ({ price, title, imageUrl, sizes, types, id }) => {
 
     const items = useSelector(selectCart).items
+
     const dispatch = useDispatch()
     const [sizeCount, sizeSet] = useState(0)
     const [typesCount, typesSet] = useState(0)
     const typeNames = ['тонкое', 'традиционное']
 
-    let PizzaBlock = {
+    let PizzaBlock: PizzaCartType = {
         price,
         title,
         imageUrl,
         sizeCount,
         types,
         id,
-        typesCount
+        typesCount,
+        count: 0
+
     }
 
     function onClickAddPizza() {

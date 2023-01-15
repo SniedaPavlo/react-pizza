@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, MouseEvent } from "react";
 import { setSort } from '../Redux/Slices/filterSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -7,9 +7,6 @@ type listObjectType = {
     sortProperty: string
 }
 
-type Sort = {
-
-}
 const list: listObjectType[] = [
     { name: 'популярности (ASK)', sortProperty: 'rating' },
     { name: 'популярности (DESC)', sortProperty: '-rating' },
@@ -29,11 +26,16 @@ const Sort: React.FC = () => {
 
     React.useEffect(() => {
         function toggleSort(event: Event) {
-            const _event = event as Event & {
-                path: Node[]
-            }
-            if (sortRef.current && !_event.path.includes(sortRef.current))
+
+            // const _event = event as MouseEvent & {
+            //     path: Node[]
+            // }
+            if (
+                //@ts-ignore
+                sortRef.current && !event.path.includes(sortRef.current)) {
                 turnChenge(false)
+            }
+
         }
         const body: HTMLBodyElement | null = document.querySelector('body')
         body?.addEventListener('click', toggleSort)

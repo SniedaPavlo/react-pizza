@@ -11,8 +11,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategoryId, setCurrentPage, setParams, selectFilter, } from '../Redux/Slices/filterSlice'
 import { fetchPizzas, selectPizza } from '../Redux/Slices/pizzaSlice'
+// import { newDispatch } from '../Redux/store'
 
-const Home: React.FC = () => {
+const Home = () => {
     const isSearch = React.useRef(false)
     const isMounter = React.useRef(false)
     //хуки
@@ -22,7 +23,7 @@ const Home: React.FC = () => {
     //Данные
     // const PizzasFilter = statePizzas.filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ? true : false)
     const { pizzas, status, message } = useSelector(selectPizza)
-    const Pizzas: any[] = pizzas.map((obj: any) => {
+    const Pizzas = pizzas.map((obj) => {
         return <PizzaBlog key={obj.id.toString()} {...obj} />
     })
     const SkeletonArr = [...new Array(6)].map((el, index) => < Skeleton key={index} />)
@@ -33,7 +34,7 @@ const Home: React.FC = () => {
     const search = searchValue ? `search=${searchValue}` : ''
     // запрос на сервер
     async function PizzasFetch() {
-        //@ts-ignore
+
         dispatch(fetchPizzas({
             order,
             sortPut,
@@ -84,11 +85,11 @@ const Home: React.FC = () => {
         isMounter.current = true
     }, [CategoryId, sort, currentPage])
 
-    function setСategories(index: number) {
+    function setСategories(index) {
         dispatch(setCategoryId(index))
     } // или сразу можно передать в пропсы этот кол бек 
 
-    function onChangeCurrent(n: number) {
+    function onChangeCurrent(n) {
         dispatch(setCurrentPage(n))
     }
 

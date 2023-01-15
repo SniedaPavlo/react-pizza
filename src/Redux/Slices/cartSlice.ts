@@ -1,11 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
+export type PizzaCartType = {
+    price: number,
+    title: string,
+    imageUrl: string,
+    sizeCount: number,
+    types: number[],
+    id: number,
+    typesCount: number
+    count: number
+}
 
-const initialState = {
+interface InitialStateInterface {
+    totalPrice: number,
+    totalItems: number,
+    items: PizzaCartType[],
+}
+
+const initialState: InitialStateInterface = {
     totalPrice: 0,
     totalItems: 0,
     items: [],
-
 }
 
 const cartSlice = createSlice({
@@ -66,15 +82,12 @@ const cartSlice = createSlice({
                     state.totalPrice = 0;
                 }
             }
-
-
-
         }
     }
 })
 
-export const selectCart = (state) => state.cartSlice
-export const myObjofItems = (id, state) => state.cartSlice.items.find((obj) => obj.id === id)
+export const selectCart = (state: RootState) => state.cartSlice
+export const myObjofItems = (id: number, state: RootState) => state.cartSlice.items.find((obj) => obj.id === id)
 
 export const { addItem, minusItem, deleteItem, clearCart } = cartSlice.actions
 export default cartSlice.reducer
