@@ -1,4 +1,4 @@
-import React, { useEffect, MouseEvent } from "react";
+import React, { useEffect, } from "react";
 import { setSort } from '../Redux/Slices/filterSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -25,17 +25,20 @@ const Sort: React.FC = () => {
     const sortRef = React.useRef<HTMLDivElement | null>(null)
 
     React.useEffect(() => {
-        function toggleSort(event: Event) {
+        function toggleSort(event: any) {
 
             // const _event = event as MouseEvent & {
             //     path: Node[]
             // }
-            if (
-                //@ts-ignore
-                sortRef.current && !event.path.includes(sortRef.current)) {
+            // if (
+            //     //@ts-ignore
+            //     sortRef.current && !event.path.includes(sortRef.current)) {
+            //     turnChenge(false)
+            // }
+
+            if (sortRef.current && !sortRef.current.contains(event.target)) {
                 turnChenge(false)
             }
-
         }
         const body: HTMLBodyElement | null = document.querySelector('body')
         body?.addEventListener('click', toggleSort)

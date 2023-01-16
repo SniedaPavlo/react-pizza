@@ -6,7 +6,7 @@ type CategoriesProps = {
 }
 
 
-const Categories: React.FC<CategoriesProps> = ({ value, onClickCategories }) => {
+const Categories: React.FC<CategoriesProps> = React.memo(({ value, onClickCategories }) => {
 
     let titleArr = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
@@ -25,6 +25,6 @@ const Categories: React.FC<CategoriesProps> = ({ value, onClickCategories }) => 
             </ul>
         </div>
     )
-}
+})
 
 export default Categories
