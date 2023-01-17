@@ -13,8 +13,8 @@ type CartItemProps = {
     typesCount: number
 }
 
-const CartItem: React.FC<CartItemProps> = ({ imageUrl, price, sizeCount, title, types, id, typesCount }) => {
-    console.log({ imageUrl, price, sizeCount, title, types, id, typesCount })
+const CartItem: React.FC<CartItemProps> = ({ imageUrl, price, sizeCount, title, id, typesCount }) => {
+
     const dispatch = useDispatch()
     // @ts-ignore
     const myObjofItemsM = useSelector(state => myObjofItems(id, state))
@@ -27,6 +27,7 @@ const CartItem: React.FC<CartItemProps> = ({ imageUrl, price, sizeCount, title, 
             id
         }))
     }
+
     return (
         <div>
             <div className="cart__item">
