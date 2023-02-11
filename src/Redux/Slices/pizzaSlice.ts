@@ -51,7 +51,7 @@ const fetchPizzas = createAsyncThunk<ResType, InterfaceFetchPizzas>('pizza/fetch
         const res = await axios.get(`https://63a4cc372a73744b00802459.mockapi.io/items?page=${currentPage}&limit=4${category}&sortPut=${sortPut}&order=${order}&${search}`)
 
         if (res.data.length < 1) {
-            return thunkAPI.fulfillWithValue({ data: [], message: 'Пиц не найдено', } as ResType)
+            return thunkAPI.fulfillWithValue({ data: [], message: 'Пиц не найдено', })
         }
         // if (res.data === undefined) {
         //     return thunkAPI.rejectWithValue({ message: 'Ошибка запроса' })

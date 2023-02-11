@@ -31,7 +31,6 @@ const PizzaBlog: React.FC<PizzaBlogProps> = ({ price, title, imageUrl, sizes, ty
         id,
         typesCount,
         count: 0
-
     }
 
     function onClickAddPizza() {

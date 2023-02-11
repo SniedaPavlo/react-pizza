@@ -28,6 +28,8 @@ const Home = () => {
         return <PizzaBlog key={obj.id.toString()} {...obj} />
 
     })
+
+
     const SkeletonArr = [...new Array(6)].map((el, index) => < Skeleton key={index} />)
     //запросы
     const order = sort.sortProperty.split('')[0] === '-' ? 'desc' : 'asc';
